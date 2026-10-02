@@ -1,0 +1,19 @@
+{
+  "[python]": {
+    "defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python"
+  },
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": true,
+
+  "environment": {
+    "JIRA_URL": "",
+    "JIRA_USERNAME": "",
+    "JIRA_API_TOKEN": ""
+  },
+
+  "copilot": {
+    "enable": true
+  }
+}
+
+

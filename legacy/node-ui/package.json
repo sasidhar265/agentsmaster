@@ -1,0 +1,14 @@
+{
+    "engines": {
+        "node": ">=22"
+    },
+    "name": "qa-workspace",
+    "private": true,
+    "scripts": {
+        "start": "dotnet run --project QaStudio.Web",
+        "start:backend": "node server.mjs",
+        "test": "node --test"
+    },
+    "type": "module",
+    "version": "1.0.0"
+}

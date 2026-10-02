@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/QaStudio.Web/QaStudio.Web.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/QaStudio.IntegrationTests/QaStudio.IntegrationTests.csproj" />
+  </Folder>
+</Solution>

@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://qastudio.local/schemas/agent-config.schema.json",
+  "title": "QA Studio agent runtime configuration",
+  "type": "object",
+  "required": ["version", "runners"],
+  "additionalProperties": false,
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "const": 1 },
+    "runners": {
+      "type": "object",
+      "required": ["codex", "copilot"],
+      "additionalProperties": false,
+      "properties": {
+        "codex": {
+          "type": "object",
+          "required": ["model", "sandbox"],
+          "additionalProperties": false,
+          "properties": {
+            "model": { "type": "string", "minLength": 1, "default": "inherit" },
+            "sandbox": { "enum": ["read-only", "workspace-write"], "default": "workspace-write" }
+          }
+        },
+        "copilot": {
+          "type": "object",
+          "required": ["model", "agents"],
+          "additionalProperties": false,
+          "properties": {
+            "model": {
+              "enum": ["request", "auto", "claude-sonnet-4.6", "claude-haiku-4.5", "gpt-5.4", "gpt-6-astra", "gpt-5.3-codex", "gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.7-flash"],
+              "default": "request"
+            },
+            "agents": {
+              "type": "object",
+              "minProperties": 1,
+              "additionalProperties": {
+                "type": "object",
+                "required": ["model", "tools"],
+                "additionalProperties": false,
+                "properties": {
+                  "model": {
+                    "enum": ["inherit", "auto", "claude-sonnet-4.6", "claude-haiku-4.5", "gpt-5.4", "gpt-6-astra", "gpt-5.3-codex", "gemini-3.5-flash", "gemini-3.6-flash", "gemini-3.7-flash"],
+                    "default": "inherit"
+                  },
+                  "tools": { "type": "array", "items": { "type": "string", "minLength": 1 }, "minItems": 1, "uniqueItems": true }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "notes": { "type": "object", "additionalProperties": { "type": "string" } }
+  }
+}

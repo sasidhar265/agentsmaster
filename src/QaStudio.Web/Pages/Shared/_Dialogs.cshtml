@@ -1,0 +1,14 @@
+<dialog id="pattern-confirmation" aria-labelledby="pattern-title" aria-describedby="pattern-confirmation-note">
+<span class="badge">QA-MASTER · EXECUTION PLAN</span><h2 id="pattern-title"></h2>
+<p id="pattern-confirmation-note">This is the pattern QA-Master will execute for your selected workflow. Review the requirements and agent sequence, then click OK to start.</p>
+<h3>Your requirements</h3><p id="pattern-request"></p><p id="pattern-inputs"></p>
+<h3>Planned agents</h3><p id="pattern-agents"></p>
+<form method="dialog"><button value="cancel" autofocus>Cancel</button><button value="ok" class="primary">OK</button></form>
+</dialog>
+<dialog id="run-progress" aria-labelledby="progress-title" aria-describedby="progress-summary">
+<div class="progress-header"><div class="progress-brand"><span class="progress-mark" aria-hidden="true">✦</span><span>AUTO FINANCE QA <span class="progress-brand-divider">/</span> AGENT WORKSPACE</span></div><button id="close-progress" aria-label="Close run progress">✕</button></div>
+<div class="progress-scroll"><section class="progress-hero"><div class="progress-kicker"><span class="progress-signal" aria-hidden="true"></span><span id="progress-phase">LIVE ORCHESTRATION</span></div><h2 id="progress-title">Generation in progress</h2><p id="progress-summary" role="status"></p><div class="progress-metrics"><div><strong id="progress-active">—</strong><span>Active agents</span></div><div><strong id="progress-complete">—</strong><span>Reported complete</span></div><div><strong id="progress-pending">—</strong><span>Awaiting updates</span></div></div></section>
+<section id="progress-failure" role="alert" hidden></section>
+<section class="progress-journey"><div class="progress-section-heading"><h3>Your agent journey</h3><span id="progress-workflow">End-to-end workflow</span></div><p class="progress-note">Live status comes from agent reports. Tasks describe planned work; parallel tracks may run together.</p><div id="progress-agents"></div></section>
+<details class="progress-console"><summary><span><span class="console-icon" aria-hidden="true">⌘</span> Runner activity</span><span class="console-hint">View output</span></summary><pre id="progress-log"></pre></details></div>
+<div class="progress-actions"><button type="button" id="progress-cancel">Cancel run</button><span class="progress-footer-note">You can keep working while agents run.</span><button type="button" id="progress-dismiss">Continue in background</button></div></dialog><dialog id="preview"><div class="section-top"><h2 id="preview-title"></h2><button id="close-preview" aria-label="Close preview">✕</button></div><pre id="preview-text"></pre></dialog>

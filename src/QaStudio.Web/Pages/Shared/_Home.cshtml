@@ -1,0 +1,44 @@
+@model WorkspaceViewModel
+<section id="home-page">
+<section class="finance-landing" aria-labelledby="finance-landing-title">
+    <div class="finance-landing-hero card">
+        <div><div class="eyebrow">AUTO FINANCE QUALITY WORKSPACE</div><h2 id="finance-landing-title">Test the full vehicle finance lifecycle</h2><p>Build quality evidence across customer, dealer, lender, and servicing journeys—from the first quote through final payment, settlement, or arrears support.</p></div>
+        <div class="finance-lifecycle" aria-label="Finance lifecycle"><span>Quote</span><i>→</i><span>Apply</span><i>→</i><span>Decide</span><i>→</i><span>Agree</span><i>→</i><span>Service</span></div>
+    </div>
+    <section class="card finance-domain-overview" aria-labelledby="finance-domain-title">
+        <div class="section-top"><div><h2 id="finance-domain-title">Understand the auto finance domain</h2><p>Connected journeys across the vehicle, the customer, and the agreement.</p></div></div>
+        <div class="finance-domain-grid">
+            <article><h3>Customers, dealers & lenders</h3><p>Customers select a vehicle and funding option. Dealers or brokers capture applications; lenders assess eligibility, make credit decisions, and fund approved agreements. Servicing teams manage the account throughout its life.</p></article>
+            <article><h3>Vehicle & finance information</h3><p>Link vehicle price, age, valuation, and dealer details to customer identity, income, deposit, term, and product. Check that quotes, applications, agreements, and payment schedules use consistent information.</p></article>
+            <article><h3>Quality across the lifecycle</h3><p>Cover successful journeys alongside referrals, declines, expired quotes, failed payments, and cancellations. Verify calculations, status changes, documents, customer communications, and the audit trail between systems.</p></article>
+        </div>
+    </section>
+    <section class="card finance-product-library" aria-labelledby="finance-products-title">
+        <div class="section-top"><div><h2 id="finance-products-title">Supported finance product types</h2><p>Product values recognised by the supplied finance data schema. Use your requirements to define exact terms and rules.</p></div><span class="badge">PRODUCT COVERAGE</span></div>
+        <div class="finance-product-grid">
+            <article class="finance-product"><span class="badge">HP</span><h3>Hire Purchase</h3><p>Spread the cost of a vehicle through a deposit and instalments, with ownership transferring once the agreement’s purchase conditions are met.</p><h4>Key product details</h4><p>Cash price, deposit, amount financed, interest rate, term, instalments, and any purchase fee.</p><h4>Testing focus</h4><ul><li>Deposit and term boundaries; repayment and total payable calculations.</li><li>Agreement activation, payment allocation, and final payment.</li><li>Early settlement, arrears, and ownership transfer conditions.</li></ul></article>
+            <article class="finance-product"><span class="badge">PCP</span><h3>Personal Contract Purchase</h3><p>Finance with regular instalments and a deferred final payment. End-of-term choices typically include paying to keep the vehicle, returning it, or arranging a new agreement.</p><h4>Key product details</h4><p>Deposit, term, agreed mileage, interest rate, vehicle residual value, and optional final payment.</p><h4>Testing focus</h4><ul><li>Quote consistency across mileage, term, deposit, and final payment.</li><li>End-of-term choices and final payment collection.</li><li>Vehicle return, excess mileage, condition charges, and settlement.</li></ul></article>
+            <article class="finance-product"><span class="badge">LEASE</span><h3>Lease</h3><p>Pay to use a vehicle over an agreed period. Ownership, return obligations, and end-of-term options depend on the lease contract.</p><h4>Key product details</h4><p>Initial rental, recurring rentals, duration, mileage allowance, maintenance options, and return conditions.</p><h4>Testing focus</h4><ul><li>Initial and recurring rental schedules and optional services.</li><li>Contract amendments, extensions, and early termination.</li><li>Vehicle return, mileage reconciliation, and condition charges.</li></ul></article>
+        </div>
+        <p class="finance-product-note">For lease variants such as personal or business contract hire and finance lease, specify the variant and its rules in the requirements brief; the current schema groups these under “Lease”.</p>
+    </section>
+    <div class="finance-landing-grid">
+        <section class="card domain-library"><div class="section-top"><div><h2>Start with a finance journey</h2><p>Select a journey to prepare a testing brief.</p></div><span class="badge">JOURNEY LIBRARY</span></div>
+            <div class="domain-journeys">
+                <button type="button" data-finance-journey="quote"><span>01</span><strong>Quote & eligibility</strong><small>Vehicle, deposit, term, mileage, APR, and product rules</small></button>
+                <button type="button" data-finance-journey="credit"><span>02</span><strong>Credit & affordability</strong><small>Identity, affordability, referrals, declines, and decisions</small></button>
+                <button type="button" data-finance-journey="agreement"><span>03</span><strong>Agreement activation</strong><small>Disclosures, consent, signatures, documents, and payout</small></button>
+                <button type="button" data-finance-journey="servicing"><span>04</span><strong>Payments & servicing</strong><small>Collections, amendments, statements, and customer support</small></button>
+                <button type="button" data-finance-journey="settlement"><span>05</span><strong>Settlement & termination</strong><small>Quotes, validity, fees, early termination, and closure</small></button>
+                <button type="button" data-finance-journey="arrears"><span>06</span><strong>Arrears & vulnerability</strong><small>Failed payments, forbearance, communications, and audit trail</small></button>
+            </div>
+        </section>
+        <aside class="card landing-actions"><div><h2>Project tools</h2><p>Move directly to the area you need.</p></div>
+            <button type="button" data-home-page="dashboard"><span>▥</span><div><strong>Project overview</strong><small>Health, workstreams, risks, and milestones</small></div><i>→</i></button>
+            <button type="button" data-home-page="execution"><span>▷</span><div><strong>Test execution</strong><small>Run BDD suites and review evidence</small></div><i>→</i></button>
+            <button type="button" data-home-page="data"><span>▦</span><div><strong>Finance test data</strong><small>Prepare governed customer and agreement data</small></div><i>→</i></button>
+            <button type="button" data-home-page="recent"><span>◷</span><div><strong>Project activity</strong><small>Review previous work and deliverables</small></div><i>→</i></button>
+        </aside>
+    </div>
+</section>
+</section>

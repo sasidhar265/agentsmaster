@@ -1,0 +1,139 @@
+{
+  "$schema": "./agent-config.schema.json",
+  "version": 1,
+  "runners": {
+    "codex": {
+      "model": "inherit",
+      "sandbox": "workspace-write"
+    },
+    "copilot": {
+      "model": "request",
+      "agents": {
+        "AutomationForge": {
+          "model": "inherit",
+          "tools": [
+            "read"
+          ]
+        },
+        "BDDAutomator": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "read",
+            "edit",
+            "search"
+          ]
+        },
+        "CodeSentinel": {
+          "model": "inherit",
+          "tools": [
+            "read",
+            "search",
+            "execute"
+          ]
+        },
+        "DomainOutcomeValidator": {
+          "model": "inherit",
+          "tools": [
+            "read",
+            "search",
+            "edit"
+          ]
+        },
+        "FeatureLens": {
+          "model": "inherit",
+          "tools": [
+            "read",
+            "search"
+          ]
+        },
+        "GherkinGenie": {
+          "model": "inherit",
+          "tools": [
+            "read",
+            "search"
+          ]
+        },
+        "QA-Master": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "read",
+            "agent",
+            "edit",
+            "search",
+            "atlassian-jira/*",
+            "browser/openBrowserPage",
+            "vscodeBrowser/openBrowserPage"
+          ]
+        },
+        "QualitySentinel": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "read",
+            "search"
+          ]
+        },
+        "RunForge": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "read",
+            "search",
+            "edit"
+          ]
+        },
+        "SheetCraft": {
+          "model": "inherit",
+          "tools": [
+            "read",
+            "search",
+            "execute"
+          ]
+        },
+        "SpecForge": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "read",
+            "edit",
+            "search",
+            "com.atlassian/atlassian-mcp-server/search"
+          ]
+        },
+        "TestCraft": {
+          "model": "inherit",
+          "tools": [
+            "read",
+            "search"
+          ]
+        },
+        "TestDataForge": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "read",
+            "search",
+            "edit"
+          ]
+        },
+        "jira-agent": {
+          "model": "inherit",
+          "tools": [
+            "execute",
+            "atlassian-jira/*",
+            "com.atlassian/atlassian-mcp-server/*",
+            "mcp_atlassian-mcp_fetch",
+            "mcp_atlassian-mcp_getJiraIssue",
+            "mcp__aashari_mcp-_jira_get"
+          ]
+        }
+      }
+    }
+  },
+  "notes": {
+    "codex": "Model and sandbox are session-wide. Per-agent model and tool overrides are not applied by this Codex CLI integration.",
+    "copilot": "Each custom agent profile receives its configured model and tools. model=inherit uses the parent session model."
+  }
+}

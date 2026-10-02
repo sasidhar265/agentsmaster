@@ -1,0 +1,77 @@
+@model WorkspaceViewModel
+<div class="main-grid" id="generation-page">
+    <section class="card composer">
+        <div class="card-heading">
+            <div class="icon purple">✧</div>
+            <div>
+                <h2>Create an auto finance test run</h2>
+                <p>Cover the journey from quotation and application through agreement and servicing.</p>
+            </div>
+        </div>
+        <form id="run-form"><label for="prompt">Which auto finance journey would you like to test?</label>
+            <div class="prompt-box" id="dropzone">
+                <textarea id="prompt" maxlength="20000"
+                          placeholder="Describe a quote, eligibility, credit decision, agreement, payment, settlement, arrears, or dealer journey…"></textarea>
+                <div id="jira-input" class="jira-attachment" hidden>
+                    <div class="label-row"><label for="jira">◈ Jira reference</label><button type="button"
+                                                                                                 id="remove-jira" aria-label="Remove Jira reference">×</button></div>
+                        <div class="jira-fields"><input id="jira" placeholder="Jira link, issue key, or number"
+                                                            autocomplete="off" aria-describedby="jira-help"><input id="project"
+                                                                                   placeholder="Project key" aria-label="Project key for numeric Jira issue"
+                                                                                   title="Required only when entering an issue number"></div>
+                            <p class="field-help" id="jira-help">Use GQS-1, a Jira link, or an issue number with its project
+                                key.</p>
+                            </div>
+                            <div id="file-list" aria-live="polite"></div>
+                            <div class="prompt-toolbar">
+                                <div class="add-input-control"><button type="button" id="add-input"
+                                                                           aria-label="Add Jira reference or documents" aria-expanded="false"
+                                                                           aria-controls="input-menu" title="Add Jira or documents">+</button>
+                                    <div id="input-menu" class="input-menu" hidden><button type="button"
+                                                                                           id="add-jira"><span>◈</span><span>Add Jira reference<small>Issue link, key, or
+                                        number</small></span></button><button type="button"
+                                                                          id="add-documents"><span>▤</span><span>Upload finance documents<small>Product rules, APIs, schemas, and
+                                        more</small></span></button></div>
+                                    </div><span>Add Jira, product rules, or API documents · or drop files here</span>
+                                </div>
+                                <input id="files" type="file" multiple accept=".pdf,.docx,.xlsx,.txt,.md,.json,.csv,.feature" hidden>
+                            </div>
+                            <p class="upload-help">PDF, DOCX, XLSX, TXT, Markdown, JSON, CSV, Gherkin · 10 MB each</p>
+                            <label class="workflow-label">Choose your workflow</label>
+                            <div class="workflows">
+                                @foreach (var workflow in Model.Workflows)
+                                {
+                                    <button type="button" data-workflow="@workflow.Pattern"
+                                            class="@(workflow.Pattern == Model.SelectedPattern ? "selected" : "")">
+                                        <span>@workflow.Icon</span><strong>@workflow.Name</strong><small>@workflow.Description</small>
+                                        @if (workflow.Pattern == Model.SelectedPattern)
+                                        {
+                                            <i>✓</i>
+                                        }
+                                    </button>
+                                }
+                            </div><label class="analysis-option"><input type="checkbox" id="analysis"> Analyze finance requirements only</label>
+                            <div id="error" role="alert" hidden></div>
+                            <div class="submit-row"><span>⚡ Fast mode</span><button
+                                id="submit" class="primary" type="submit">Generate finance tests <span>→</span></button></div>
+                            </form>
+                        </section>
+                        <aside class="right-column">
+                            <section class="card route-card">
+                                <div class="section-top">
+                                    <h2>Your finance QA workflow</h2><span class="badge">LIVE ROUTING</span>
+                                </div>
+                                <p>Orchestrated by QA-Master</p>
+                                <div id="route"></div>
+                                <div class="route-note"><span>◇</span>
+                                    <p><strong>Finance quality gates, built in.</strong><br>Specialist agents review journey coverage, calculation boundaries, controls, and evidence before the next stage.</p>
+                                    </div>
+                                </section>
+                                <section class="tip-card">
+                                    <div class="icon">✦</div>
+                                    <h3>Ground tests in product rules.</h3>
+                                    <p>Include product type, vehicle, deposit, term, mileage, APR, eligibility, expected calculations, and downstream decisions. Attach API schemas where available.</p><span>ARTIFACTS SAVED LOCALLY · GENERATED WITH COPILOT</span>
+                                    <div class="finance-domains" aria-label="Auto finance coverage areas"><span>Quote</span><span>Credit</span><span>Agreement</span><span>Payments</span><span>Settlement</span><span>Arrears</span></div>
+                                    </section>
+                                </aside>
+                            </div>

@@ -1,0 +1,18 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "QA Studio — C# MVC",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build QA Studio",
+      "program": "${workspaceFolder}/src/QaStudio.Web/bin/Debug/net10.0/QaStudio.Web.dll",
+      "cwd": "${workspaceFolder}/src/QaStudio.Web",
+      "console": "integratedTerminal",
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "Workspace__Root": "${workspaceFolder}"
+      }
+    }
+  ]
+}

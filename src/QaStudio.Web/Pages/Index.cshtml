@@ -1,0 +1,10 @@
+@page
+@model QaStudio.Web.Pages.IndexModel
+@{ ViewData["Title"] = Model.Workspace.Title; }
+<partial name="_Home" model="Model.Workspace" />
+<partial name="_Generation" model="Model.Workspace" />
+<partial name="_Execution" />
+<partial name="_Data" />
+<partial name="_Dashboard" />
+<partial name="_Recent" />
+<partial name="_Results" />

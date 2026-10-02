@@ -1,0 +1,15 @@
+.qa-runs/
+.env
+node_modules/
+**/bin/
+**/obj/
+publish/
+
+# Local credentials, requirement inputs, and OS files
+.env.*
+!.env.example
+.vscode/mcp.json
+input/*
+!input/.gitkeep
+.DS_Store
+__pycache__/

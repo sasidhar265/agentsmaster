@@ -1,0 +1,15 @@
+<section id="recent-page" hidden>
+    <div class="card recent-runs">
+        <div class="section-top activity-heading">
+            <div><h2>Project activity log</h2><p>Review run history and open action-by-action logs.</p></div>
+            <div class="activity-controls"><label for="activity-page-size">Records per page<select id="activity-page-size"><option value="10">10</option><option value="25">25</option><option value="50">50</option><option value="100">100</option></select></label><button type="button" id="refresh-runs">↻ Refresh</button></div>
+        </div>
+        <p id="recent-error" class="workflow-error" role="alert" hidden></p>
+        <div class="activity-table-scroll"><table class="activity-table"><caption class="activity-caption">Project runs, newest first</caption><thead><tr><th scope="col">Work item</th><th scope="col">Type</th><th scope="col">Started</th><th scope="col">Status</th><th scope="col">Details</th></tr></thead><tbody id="history"></tbody></table></div>
+        <div class="activity-pagination"><span id="activity-range" role="status"></span><div><button type="button" id="activity-previous">← Previous</button><span id="activity-page-number"></span><button type="button" id="activity-next">Next →</button></div></div>
+    </div>
+    <dialog id="activity-detail" class="activity-detail" aria-labelledby="activity-detail-title" aria-describedby="activity-detail-status">
+        <div class="section-top"><div><div class="eyebrow">PROJECT ACTIVITY</div><h2 id="activity-detail-title" tabindex="-1">Run details</h2><p id="activity-detail-status" role="status"></p></div><div class="activity-detail-actions"><button type="button" id="activity-detail-refresh">↻ Refresh logs</button><button type="button" id="activity-detail-close" aria-label="Close run details" autofocus>✕ Close</button></div></div>
+        <div id="activity-detail-body"></div>
+    </dialog>
+</section>

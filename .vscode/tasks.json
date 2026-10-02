@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build QA Studio",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/QaStudio.slnx", "-m:1"],
+      "problemMatcher": "$msCompile",
+      "group": { "kind": "build", "isDefault": true }
+    },
+    {
+      "label": "Test QA Studio",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["run", "--project", "${workspaceFolder}/tests/QaStudio.IntegrationTests"],
+      "problemMatcher": "$msCompile",
+      "group": "test"
+    }
+  ]
+}

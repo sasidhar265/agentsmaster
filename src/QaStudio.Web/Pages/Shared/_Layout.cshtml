@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/styles.css" asp-append-version="true">
+    <script src="~/progress.js" asp-append-version="true" defer></script>
+    <script src="~/app.js" asp-append-version="true" defer></script>
+    <script src="~/workflows.js" asp-append-version="true" defer></script>
+    <script type="module" src="~/dashboard.js" asp-append-version="true"></script>
+</head>
+<body>
+    <partial name="_Sidebar" />
+    <div class="shell">
+<header><div class="breadcrumb">Auto finance <span>/</span> <strong>Test generation</strong></div><div class="header-actions"><div class="connection"><span class="online"></span><span id="connection">Checking runner</span></div></div></header><main><div class="heading"><div><div class="eyebrow">AUTO FINANCE QUALITY COPILOT</div><h1>From finance journeys to confidence.</h1><p>Test customer, dealer, credit, agreement, payment, and servicing journeys with specialist QA agents.</p></div><span class="version">✦ Powered by QA-Master</span></div>
+
+        @RenderBody()
+    </main></div>
+    <partial name="_Dialogs" />
+</body>
+</html>
