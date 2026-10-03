@@ -1,27 +1,31 @@
 ---
 name: sheetcraft
-description: "Export QualitySentinel-approved QA Studio manual test artifacts into real Excel workbooks with the prescribed workbook and traceability structure."
+description: "Export validated detailed manual cases to a real Excel workbook, preserving every source field and verifying the workbook contract."
 ---
 
-# SheetCraft
+# Export and verify manual-case workbooks
 
-Require the manual-test validation gate before export. Produce a readable .xlsx containing every validated case without truncation; verify the actual workbook rather than presenting Markdown as an export.
+## Confirm export eligibility
 
-## Load the canonical instructions
+Inputs: exact current-flow TestCraft detailed case file, passing QualitySentinel evidence, BASE_NAME, and OUTPUT_PATH. Verify the source contains parseable case blocks and the gate actually passed. Do not use unrelated output files or invent missing fields.
 
-Read [SheetCraft.agent.md](../../agents/SheetCraft.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Map the detailed cases losslessly
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Reuse scripts/SheetCraft-ExcelExporter.py; create it once from the conditional exporter example only if missing. Export one row per source case to the single TestCaseDetails sheet. Preserve the 14-column order in the workbook contract, numbered steps, multiline preconditions/results, traceability, and JSON text. Leave absent fields blank, preserve long values, and apply readable wrapped cells and a frozen header.
 
+## Reopen before claiming success
+
+Save output/sheetcraft/{BASE_NAME}-ManualTestCases.xlsx. Reopen it and check the one worksheet, exact ordered headers, source case IDs and row count, and field preservation. Fix exporter defects in its canonical file and recreate invalid workbooks. Missing dependencies or unmappable cases must be disclosed; a Markdown table is not an Excel deliverable. Return the path, verified row count, and limitations without inventing coverage approval.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-capabilities-and-constraints](../../agent-reference/SheetCraft/01-capabilities-and-constraints.md)
 - [02-inputs-and-workflow](../../agent-reference/SheetCraft/02-inputs-and-workflow.md)
 - [03-workbook-contract](../../agent-reference/SheetCraft/03-workbook-contract.md)
 - [04-quality-and-integration](../../agent-reference/SheetCraft/04-quality-and-integration.md)
 - [05-troubleshooting-and-checklist](../../agent-reference/SheetCraft/05-troubleshooting-and-checklist.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

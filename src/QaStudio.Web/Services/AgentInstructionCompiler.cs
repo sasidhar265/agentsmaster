@@ -1,10 +1,11 @@
 using System.Text.RegularExpressions;
 using System.Text.Json;
+using QaStudio.Web.Models;
 
 namespace QaStudio.Web.Services;
 
 /// <summary>
-/// Expands the human-maintained instruction modules into complete agent files
+/// Expands agent skills and their required references into complete agent files
 /// in a run workspace. Both supported CLIs then receive ordinary agent files.
 /// </summary>
 public static partial class AgentInstructionCompiler
@@ -30,7 +31,6 @@ public static partial class AgentInstructionCompiler
     {
         var github = Path.Combine(workspaceRoot, ".github");
         var agents = Path.Combine(github, "agents");
-        var references = Path.GetFullPath(Path.Combine(github, "agent-reference")) + Path.DirectorySeparatorChar;
         if (!Directory.Exists(agents)) return;
 
         using var config = Load(Path.Combine(github, "agent-config.json"));
@@ -56,30 +56,7 @@ public static partial class AgentInstructionCompiler
                 source = ApplyCopilotSettings(source, frontmatterEnd + 3, profile, id);
             }
 
-            var start = source.IndexOf(StartMarker, StringComparison.Ordinal);
-            var end = source.IndexOf(EndMarker, StringComparison.Ordinal);
-            if (start < 0 && end < 0) continue; // Self-contained agent.
-            if (start < 0 || end <= start)
-                throw new InvalidDataException($"Invalid instruction module markers in {Path.GetFileName(agentFile)}.");
-
-            var listStart = start + StartMarker.Length;
-            var list = source[listStart..end];
-            var links = ModuleLink().Matches(list).Select(match => match.Groups[1].Value).ToArray();
-            var listedItems = list.Split('\n').Count(line => line.TrimStart().StartsWith("- ", StringComparison.Ordinal));
-            if (links.Length == 0 || links.Length != listedItems)
-                throw new InvalidDataException($"Instruction module list is empty or malformed in {Path.GetFileName(agentFile)}.");
-
-            var modules = new List<string>(links.Length);
-            foreach (var link in links)
-            {
-                var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(agentFile)!, link));
-                if (!path.StartsWith(references, StringComparison.Ordinal) || !File.Exists(path))
-                    throw new InvalidDataException($"Missing or invalid instruction module '{link}' in {Path.GetFileName(agentFile)}.");
-                modules.Add($"<!-- Source module: {Path.GetRelativePath(github, path).Replace('\\', '/')} -->\n{File.ReadAllText(path).Trim()}\n");
-            }
-
-            var compiled = source[..start] + "## Required instructions\n\n" + string.Join("\n", modules)
-                + source[(end + EndMarker.Length)..];
+            var compiled = Expand(source, agentFile, github, new HashSet<string>(StringComparer.Ordinal));
             File.WriteAllText(agentFile, compiled);
         }
 
@@ -87,6 +64,52 @@ public static partial class AgentInstructionCompiler
             foreach (var profile in profileSettings.EnumerateObject())
                 if (!foundProfiles.Contains(profile.Name))
                     throw new InvalidDataException($"agent-config.json defines Copilot settings for unknown agent '{profile.Name}'.");
+    }
+
+    private static string Expand(string source, string sourceFile, string github, HashSet<string> ancestors)
+    {
+        if (!ancestors.Add(sourceFile))
+            throw new InvalidDataException($"Circular instruction reference at {Path.GetFileName(sourceFile)}.");
+        try
+        {
+            var start = source.IndexOf(StartMarker, StringComparison.Ordinal);
+            var end = source.IndexOf(EndMarker, StringComparison.Ordinal);
+            if (start < 0 && end < 0) return source;
+            if (start < 0 || end <= start || source.IndexOf(StartMarker, start + StartMarker.Length, StringComparison.Ordinal) >= 0
+                || source.IndexOf(EndMarker, end + EndMarker.Length, StringComparison.Ordinal) >= 0)
+                throw new InvalidDataException($"Invalid instruction module markers in {Path.GetFileName(sourceFile)}.");
+
+            var list = source[(start + StartMarker.Length)..end];
+            var links = ModuleLink().Matches(list).Select(match => match.Groups[1].Value).ToArray();
+            var listedItems = list.Split('\n').Count(line => line.TrimStart().StartsWith("- ", StringComparison.Ordinal));
+            if (links.Length == 0 || links.Length != listedItems)
+                throw new InvalidDataException($"Instruction module list is empty or malformed in {Path.GetFileName(sourceFile)}.");
+
+            var referenceRoot = Path.GetFullPath(Path.Combine(github, "agent-reference")) + Path.DirectorySeparatorChar;
+            var skillRoot = Path.GetFullPath(Path.Combine(github, "skills")) + Path.DirectorySeparatorChar;
+            var modules = new List<string>(links.Length);
+            foreach (var link in links)
+            {
+                var path = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(sourceFile)!, link));
+                var isSkill = path.StartsWith(skillRoot, StringComparison.Ordinal) && Path.GetFileName(path) == "SKILL.md";
+                if ((!path.StartsWith(referenceRoot, StringComparison.Ordinal) && !isSkill) || !File.Exists(path))
+                    throw new InvalidDataException($"Missing or invalid instruction module '{link}' in {Path.GetFileName(sourceFile)}.");
+                try { WorkspaceStore.SafePath(github, Path.GetRelativePath(github, path)); }
+                catch (ApiException e) { throw new InvalidDataException($"Invalid instruction path '{link}'.", e); }
+                var content = File.ReadAllText(path);
+                if (isSkill)
+                {
+                    var headerEnd = content.StartsWith("---\n", StringComparison.Ordinal) ? content.IndexOf("\n---", 4, StringComparison.Ordinal)
+                        : content.StartsWith("---\r\n", StringComparison.Ordinal) ? content.IndexOf("\n---", 5, StringComparison.Ordinal) : -1;
+                    if (headerEnd < 0)
+                        throw new InvalidDataException($"Missing skill frontmatter in {path}.");
+                    content = content[(headerEnd + 4)..].TrimStart('\r', '\n');
+                }
+                modules.Add($"<!-- Source module: {Path.GetRelativePath(github, path).Replace('\\', '/')} -->\n{Expand(content, path, github, ancestors).Trim()}\n");
+            }
+            return source[..start] + string.Join("\n", modules) + source[(end + EndMarker.Length)..];
+        }
+        finally { ancestors.Remove(sourceFile); }
     }
 
     public static JsonDocument Load(string configPath)

@@ -1,25 +1,31 @@
 ---
 name: testdataforge
-description: "Generate source-grounded UK automotive finance test datasets from shared payloads, schemas, and business rules, including boundary, negative, and duplicate cases."
+description: "Create deterministic, source-preserving automotive finance fixtures with provenance and grounded boundary/negative cases from a supplied payload and schema."
 ---
 
-# TestDataForge
+# Generate source-grounded finance fixtures
 
-Keep supplied identifiers and finance or vehicle values authoritative. Generate missing values only under the source and schema rules; preserve dataset limits, exact filenames, and grounded expected outcomes.
+## Resolve the source contract
 
-## Load the canonical instructions
+Inputs: exact current-flow source payload, matching optional schema, requirement analysis, BASE_NAME, OUTPUT_PATH, and seed. Parse supported JSON/JSONC without changing the source. The supplied schema controls types, enums, formats, and limits; x-openList values are not closed enums and derived constraints are not stated requirements.
 
-Read [TestDataForge.agent.md](../../agents/TestDataForge.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+Preserve all supplied identifiers and values. Generate missing identifiers only under the generation rules. Record conflicts such as CapCode/productId formats without selecting an interpretation. A fixture intentionally testing an invalid value is separate from the untouched baseline and must name the condition it violates.
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+## Generate repeatable fixtures
 
+Reuse scripts/TestDataForge-Generator.py; create the canonical parameterized helper only when missing. Emit the required valid baseline, supported boundary pairs, negative and duplicate cases under the source rules. Derive percentages from the fixture's actual priceTotal. Use stable keys, seed, provenance, and explicit generation-date context when a rule depends on today; disclose any date-dependent reproducibility limit rather than silently changing results.
+
+## Validate and deliver
+
+Write only output/testdataforge/{BASE_NAME}-TestData.json with _meta provenance and grounded limits. Check loadable JSON, complete fixtures, byte-preserved supplied identifiers, generated identifier rules, and supported expected validity. Report unresolved conflicts and omitted unsupported cases. Do not overwrite framework Input/TestData.json without explicit instruction or alter appsettings.json.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-source-and-generation-rules](../../agent-reference/TestDataForge/01-source-and-generation-rules.md)
 - [02-limits-and-output](../../agent-reference/TestDataForge/02-limits-and-output.md)
 - [03-workflow-and-quality](../../agent-reference/TestDataForge/03-workflow-and-quality.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

@@ -1,23 +1,29 @@
 ---
 name: domainoutcomevalidator
-description: "Assess BRDs and requirements for domain specificity, business outcomes, measurable acceptance criteria, traceability, consistency, and actionable gaps."
+description: "Assess supplied BRDs for domain clarity, business outcomes, measurable acceptance evidence, consistency, and readiness without rewriting requirements."
 ---
 
-# DomainOutcomeValidator
+# Assess domain clarity and business outcomes
 
-Cite source evidence and distinguish missing rules from demonstrated requirements. Produce the prescribed assessment and justified verdict without rewriting the source or inventing domain policy.
+## Establish reviewable scope
 
-## Load the canonical instructions
+Inputs: current-flow uploaded requirement documents or inline requirements, BASE_NAME, and report path. Read all assigned material and record which documents and sections are accessible. Establish actors, lifecycle, domain, explicit scope, and exclusions from evidence; do not infer finance policy or regulation from industry familiarity.
 
-Read [DomainOutcomeValidator.agent.md](../../agents/DomainOutcomeValidator.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Classify outcome and acceptance evidence
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+For each material statement, distinguish Outcome, Output/activity, Unverifiable, and Unclear/conflicting. Cite the document and locator. Evaluate beneficiary, observable benefit, measure or acceptance condition, traceability, and contradictions using the assessment rubric. Observable acceptance criteria can support testability even without a formal KPI.
 
+## Decide readiness with justified gaps
+
+Use PASS when the stated next step is supported and no critical contradiction remains; NEEDS-IMPROVEMENT for material but reviewable gaps; BLOCKED when missing/unreadable documents or critical conflicts prevent reliable assessment. Do not invent numeric scores, confidence, or business-owner approval.
+
+Write only output/domainoutcomevalidator/{BASE_NAME}-BRD-Assessment.md using the report structure. Prioritize cited gaps and precise clarification questions; preserve the source. Return the path, verdict, safe downstream uses, and limitations. This review does not launch test generation.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-assessment-and-report](../../agent-reference/DomainOutcomeValidator/01-assessment-and-report.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

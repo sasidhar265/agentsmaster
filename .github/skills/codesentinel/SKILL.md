@@ -1,25 +1,31 @@
 ---
 name: codesentinel
-description: "Audit a generated QA Studio C# Reqnroll framework against coding standards, project layout, binding coverage, and compilation requirements."
+description: "Audit C# Reqnroll framework standards, folder structure, binding coverage, and compilation evidence; use for code approval or review after targeted rework."
 ---
 
-# CodeSentinel
+# Audit framework standards and compilation
 
-Report exact violations without repairing the framework. Route code changes to BDDAutomator. Distinguish actual compilation evidence from an unavailable SDK and preserve the specified SKIPPED behavior.
+## Establish the review scope
 
-## Load the canonical instructions
+Inputs: exact framework root, validated feature, source/request contracts, BASE_NAME, report path, and optional prior findings. Inventory authored source and required assets; exclude generated feature code, bin, obj, and other generated artifacts from source-rule violations.
 
-Read [CodeSentinel.agent.md](../../agents/CodeSentinel.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Review against the actual standards
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Apply STD-01..STD-12 and the additional structure, namespace, binding, safety, and asset-preservation checks in the validation reference. Verify one canonical binding for each distinct feature step, no orphan bindings, correct Then assertions, service/builder separation, shared HttpClient, no prohibited branching/serialization attributes/SpecFlow/RestSharp, and configuration-driven endpoints without exposed secrets.
 
+Build when the SDK is available and record its actual command and outcome. An unavailable SDK is SKIPPED under the report rules, never a successful compilation; code violations remain failures. Rework review checks both the named fixes and any effects they introduce.
+
+## Issue actionable findings
+
+Write output/codesentinel/{BASE_NAME}-CodeValidationReport.md using the verdict reference. Report rule ID, exact path/line, evidence, and required correction. Never edit framework code. Return the verdict and compilation status to QA-Master; BDDAutomator owns repairs and RunForge owns execution.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-scope](../../agent-reference/CodeSentinel/01-scope.md)
 - [02-validation-rules](../../agent-reference/CodeSentinel/02-validation-rules.md)
 - [03-verdict-and-report](../../agent-reference/CodeSentinel/03-verdict-and-report.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

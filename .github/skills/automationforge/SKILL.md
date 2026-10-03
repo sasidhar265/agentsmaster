@@ -1,16 +1,19 @@
 ---
 name: automationforge
-description: "Resolve requests naming the retired QA Studio AutomationForge role to its current framework-generation, review, and execution replacements."
+description: "Route a request naming the retired AutomationForge agent to its maintained generation, code-review, or execution replacement."
 ---
 
-# AutomationForge
+# Route retired AutomationForge requests
 
-AutomationForge is retired. Do not run its legacy implementation or use RestSharp guidance. Route framework generation to BDDAutomator, review to CodeSentinel, and execution to RunForge; load only the replacement skills needed for the requested task.
+## Resolve the former responsibility
 
-## Load the canonical instructions
+AutomationForge remains retired. Determine whether the request concerns framework creation/update, standards review, execution, or a combined route:
 
-Read [AutomationForge.agent.md](../../agents/AutomationForge.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+| Requested work | Maintained skill |
+| --- | --- |
+| Framework, services, builders, models, utilities, hooks, or bindings | [BDDAutomator](../bddautomator/SKILL.md) |
+| Standards and compilation review | [CodeSentinel](../codesentinel/SKILL.md) |
+| Test execution and reporting | [RunForge](../runforge/SKILL.md) |
+| Multiple stages or unclear workflow | [QA-Master](../qa-master/SKILL.md) |
 
-Replacement skills: [BDDAutomator](../bddautomator/SKILL.md), [CodeSentinel](../codesentinel/SKILL.md), and [RunForge](../runforge/SKILL.md).
-
-Keep the retirement in force. This skill produces routing guidance, not legacy framework artifacts.
+Load only the replacement needed for the requested work and pass the existing inputs and scope. Do not invoke the legacy agent, generate retired artifacts, or revive RestSharp guidance. Return the selected route and any missing prerequisite; no standalone implementation is owned by this skill.

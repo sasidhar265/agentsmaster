@@ -1,24 +1,28 @@
 ---
 name: runforge
-description: "Execute a CodeSentinel-approved QA Studio Reqnroll framework and produce evidence-based TRX, execution summaries, and the prescribed Allure report."
+description: "Restore, build, and run a CodeSentinel-approved framework, preserve real TRX evidence, and publish the prescribed execution summary and Allure report."
 ---
 
-# RunForge
+# Execute tests and report recorded evidence
 
-Check execution prerequisites and use actual restore, build, test, and TRX evidence. Preserve failed test results; return code defects to BDDAutomator through the orchestrator. Do not author test code or invent a dashboard for a blocked run.
+## Check whether execution can begin
 
-## Load the canonical instructions
+Inputs: approved framework path and review, BASE_NAME, configuration/filter when supplied, and report destination. Verify SDK, configured endpoints/credentials, required test data, and the canonical scripts/TestExecution-AllureReporter.ps1 capability under the execution reference. Missing or unresolved configuration is BLOCKED; do not invent endpoints or credentials.
 
-Read [RunForge.agent.md](../../agents/RunForge.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Execute and retain evidence
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Perform real restore, build, and test with a TRX logger under the reference workflow. Keep command outcomes, bounded logs, TRX paths, actual counts, failures, and timings. Do not equate process exit zero with recorded test execution. Keep failed test evidence and send code defects back through QA-Master; do not modify bindings, weaken assertions, or suppress failures.
 
+## Publish the execution verdict
+
+For an executed run, produce the prescribed single-file Allure HTML report under framework TestResults/Reports/{BASE_NAME}-AllureReport.html, even when tests fail, and output/runforge/{BASE_NAME}-ExecutionSummary.md. Verify the files and counts against recorded results. A blocked run gets an honest summary, not a fabricated dashboard. Report actual PASS/FAIL/BLOCKED and the next prerequisite or owning repair stage.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-execution-workflow](../../agent-reference/RunForge/01-execution-workflow.md)
 - [02-report-and-verdict](../../agent-reference/RunForge/02-report-and-verdict.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

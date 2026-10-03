@@ -5,18 +5,16 @@ tools: [execute, read, agent, edit, search, 'atlassian-jira/*', browser/openBrow
 user-invocable: true
 ---
 
-# QA-Master: QA workflow orchestration
+# QA-Master
 
-Route requirements to specialists, enforce quality gates, and verify artifacts. Do not generate specialist artifacts yourself when delegation is available. Follow runtime instructions about tool availability; disclose sequential fallback and never call a same-agent review independent.
+Coordinate QA Studio canonical testing patterns, specialist handoffs, quality gates, and bounded rework
 
-## Required instructions
+Own routing, delegation, gate decisions, and bounded feedback loops. Specialists own generated artifacts; do not author them when delegation is available. Disclose sequential fallback when the runtime cannot delegate.
+
+## Required skill
+
+Read the skill and its required references before starting. In a compiled run, the procedure and mandatory contracts below are already assembled; do not reload the source files.
 
 <!-- AGENT_MODULES_START -->
-- [GenAI quality and safety](../agent-reference/GENAI-QUALITY.md) — `.github/agent-reference/GENAI-QUALITY.md`
-Before starting this agent’s task, read **all** instruction modules below in the listed order. They are mandatory parts of this agent definition, not optional examples. Paths are relative to the workspace root; Markdown links alone do not load their contents. If a module cannot be read, report BLOCKED and do not proceed with the task.
-
-- [Execution and routing](../agent-reference/QA-Master/01-execution-and-routing.md) — `.github/agent-reference/QA-Master/01-execution-and-routing.md`
-- [Inputs and fast mode](../agent-reference/QA-Master/02-inputs-and-fast-mode.md) — `.github/agent-reference/QA-Master/02-inputs-and-fast-mode.md`
-- [Gates and artifacts](../agent-reference/QA-Master/03-gates-and-artifacts.md) — `.github/agent-reference/QA-Master/03-gates-and-artifacts.md`
-
+- [QA-Master procedure](../skills/qa-master/SKILL.md)
 <!-- AGENT_MODULES_END -->

@@ -1,6 +1,6 @@
 # Agent maintenance guide
 
-Agent entry points live in `../agents/`. Keep their short role description and runner metadata there. Detailed policies and examples live in the matching module folder below.
+Agent entry points live in `../agents/` and own role boundaries, runner metadata, and handoffs. Procedures live in `../skills/<skill-name>/SKILL.md`; each skill owns a distinct input contract, decisions, execution procedure, and verification. Detailed standards, report formats, and examples remain in the matching reference folders below.
 
 Edit `../agent-config.json` to choose Copilot models and tool lists for each agent, and to choose the Codex session model and sandbox. It is the source of truth for settings applied by QA Studio. Keep every agent name in its Copilot map aligned with the `name` field in the corresponding agent file. Use `inherit` for a profile that should use its parent session's model.
 
@@ -19,27 +19,25 @@ Edit `../agent-config.json` to choose Copilot models and tool lists for each age
 | SheetCraft | Capabilities and constraints; inputs and workflow; workbook contract; quality and integration; troubleshooting and checklist |
 | DomainOutcomeValidator | Assessment method and report |
 
-Shared quality policy: `GENAI-QUALITY.md` is a required first module for every active agent. It governs grounding, untrusted input, privacy, tool use, verification, and honest reporting; specialist modules add domain rules.
+Shared quality policy: `GENAI-QUALITY.md` is a required first reference for every active skill. It governs grounding, untrusted input, privacy, tool use, verification, and honest reporting; specialist modules add domain rules.
 
-Each agent has a matching directory here. Numeric filename prefixes specify reading order. Edit the modules as the source of truth. Before a run starts, QA Studio expands each listed module into that agent's `.agent.md` file in the isolated run workspace. The runners therefore receive a complete agent definition in one file and don't need to follow links or remember to load extra instructions. The source entry point remains short and easy to scan.
+The dependency direction is agent → skill → required references. Skills do not load agent files. Ordered required dependencies are declared inside `AGENT_MODULES_START` / `AGENT_MODULES_END` blocks. Before a run starts, QA Studio recursively assembles the skill body and required references into the staged agent definition, stripping skill frontmatter. Both supported runners receive the procedure and complete mandatory contracts in one file. Source files remain unchanged. Missing files, cycles, escaped paths, and symbolic links stop compilation.
 
-`jira.agent.md` uses the shared GenAI policy module; its task-specific workflow stays in the entry point. Superseded `AutomationForge.agent.md` remains self-contained. The existing `bdd-framework-examples.md`, `jira-setup-and-examples.md`, and `sheetcraft-exporter-example.md` remain conditional references, loaded as their owning instructions specify.
+Only `.github/skills/**/SKILL.md` and Markdown files under `.github/agent-reference/` can be required dependencies. Optional example links stay outside the required blocks and are read only when needed; they do not authorize extra actions. Jira's detailed extraction rules live in `jira/01-extraction-workflow.md`. AutomationForge remains retired; its skill routes to replacements.
 
 ## Making changes
 
-1. Start at the agent entry point and locate the responsibility you need to update.
-2. Edit its module as the source of truth. Preserve complete templates, tables, and code fences.
-3. Keep agent names, frontmatter, workflow patterns, output paths, quality thresholds, and preservation rules stable unless a behavior change is intended.
-4. When adding or renaming a module, update the entry point's ordered list inside the `AGENT_MODULES_START` and `AGENT_MODULES_END` markers. Keep each list item as a Markdown link to a local `.md` file; the app checks the markers and paths when staging a run and stops with a clear error if they are invalid.
-5. Keep required policies in the required module list; moving a policy into an optional example can change behavior.
+1. Edit the agent for responsibility, permissions metadata, or handoff changes.
+2. Edit its skill for input contracts, decision rules, procedure, and verification changes.
+3. Edit reference modules for detailed standards, rubrics, and artifact formats. Preserve existing workflow patterns, gate thresholds, and asset ownership unless changing behavior is intended.
+4. Maintain the skill's ordered required-reference block when adding or renaming a module. Keep shared quality policy first for active roles; optional examples do not replace required standards.
+5. Validate skill frontmatter and local references, then run `dotnet run --project tests/QaStudio.IntegrationTests`. The suite compiles all real agents for both runners, checks mandatory contracts survive assembly, and exercises missing/circular/escaped/linked dependencies.
 
-Every active agent also loads `GENAI-QUALITY.md`. Keep its grounding, untrusted-input, privacy, verification, and honest-reporting requirements in force across all patterns. Update the relevant specialist module as well when a rule needs domain-specific detail.
-
-The module split preserves the original instruction text and order. Runtime assembly keeps the complete instructions visible to both supported runners. A new AI runner should use the same assembled files or add an equivalent loader before it is considered supported.
+Required standards are still assembled in full; this redesign does not promise token savings for those contracts. Context is limited by selecting only the requested stage and loading optional examples when needed, rather than preloading all skills. Compiler changes must preserve the existing runtime metadata and sequential fallback rules.
 
 ## Agent skills
 
-Each agent has a reusable entry point under `.github/skills/<skill-name>/SKILL.md`. These skills load the existing agent definition and its required instruction modules rather than duplicating workflow policies. QA Studio already copies the entire `.github` tree into each run workspace, so the skills and their relative references travel with the agents.
+Each agent uses a procedure under `.github/skills/<skill-name>/SKILL.md`. These skills can be used directly without reading an agent definition. Different skills own different operations: framework updates, coverage audits, feature review, evidence-based execution, lossless workbook export, and source-preserving data generation. QA Studio already copies the entire `.github` tree into each run workspace, so the skills and their relative references travel with the agents.
 
 | Agent | Skill |
 | --- | --- |
@@ -58,6 +56,6 @@ Each agent has a reusable entry point under `.github/skills/<skill-name>/SKILL.m
 | jira-agent / JiraExtractor | [jira-agent](../skills/jira-agent/SKILL.md) |
 | AutomationForge | [automationforge](../skills/automationforge/SKILL.md) |
 
-To use a skill with a file-reading runner, explicitly ask it to read the relevant `SKILL.md` and follow its loading instructions. Automatic discovery depends on the runner and its configured skill locations; these repository files do not install skills globally or change runner configuration. Existing QA Studio runs continue to use the compiled agent definitions.
+To use a skill with a file-reading runner, explicitly ask it to read the relevant `SKILL.md` and follow its loading instructions. Automatic discovery depends on the runner and its configured skill locations; these repository files do not install skills globally or change runner configuration. New QA Studio runs automatically assemble the required skills into their agent definitions. Previously staged run artifacts are unchanged.
 
-When changing a role, edit its existing agent definition or instruction modules. Update the skill description and routing guidance if its responsibility changes. When adding or retiring an agent, maintain its skill and this mapping as well. AutomationForge's skill only routes to its replacements; the agent remains retired.
+Keep role changes in the agent, procedure changes in the skill, and detailed contract changes in references. When adding or retiring an agent, maintain its skill and this mapping as well. AutomationForge's skill only routes to its replacements; the agent remains retired.

@@ -34,6 +34,7 @@ var dotnet = Path.GetFullPath(Path.Combine(runtimeDirectory, "../../..", Operati
 Process? web = null;
 try
 {
+    AgentSkillChecks.Run(root, Check);
     Check(RunCoordinator.JiraKey("gqs-1", "") == "GQS-1", "Jira key normalization");
     Check(RunCoordinator.JiraKey("https://example.test/browse/GQS-42?x=1", "") == "GQS-42", "Jira links");
     Check(RunCoordinator.JiraKey("12", "gqs") == "GQS-12", "Numeric Jira references");

@@ -1,24 +1,30 @@
 ---
 name: testcraft
-description: "Create traceable manual test cases from requirements and SpecForge analysis, with concrete steps, expected results, and positive, negative, and boundary coverage."
+description: "Design executable manual test cases with concrete data and measurable expected results from supplied requirements and scenario analysis; use for manual-case authoring or targeted rework."
 ---
 
-# TestCraft
+# Design executable manual cases
 
-Use the detailed manual-case contract. Hand completed cases to QualitySentinel for validation; SheetCraft owns Excel export after the gate passes.
+## Select the manual cases
 
-## Load the canonical instructions
+Inputs: current-flow requirement and SpecForge paths, supplied test data, BASE_NAME, OUTPUT_PATH, and optional QualitySentinel findings. Read assigned material and select at most three cases according to the generation reference's mix. Keep uncovered rules visible; the cap never implies full coverage.
 
-Read [TestCraft.agent.md](../../agents/TestCraft.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Write reproducible case blocks
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Use QT_001–QT_003 sequentially, independent of scenario numbering. Give every case requirement, scenario, and business-rule links; complete preconditions; numbered actions; concrete JSON data; measurable results; priority; and risk. Use only stated limits for Boundary cases. Cover Manual-Only documentation scenarios when selected; omit performance/load/latency tests. Report unknown environment details instead of inventing them.
 
+On rework, address the named gaps in the same case file without raising the cap or producing another format. Keep the source requirements unchanged.
+
+## Check the deliverable
+
+Save only output/testcraft/{BASE_NAME}-ManualTestCases.md in the detailed block format. Check each case can be performed independently and its expected result observed. Return the file and remaining coverage gaps to QualitySentinel. SheetCraft owns Excel export after validation; do not append a summary table or CSV.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-generation-workflow](../../agent-reference/TestCraft/01-generation-workflow.md)
 - [02-output-and-quality](../../agent-reference/TestCraft/02-output-and-quality.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

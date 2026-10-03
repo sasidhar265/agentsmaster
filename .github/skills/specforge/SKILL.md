@@ -1,24 +1,30 @@
 ---
 name: specforge
-description: "Analyze BRDs, specifications, and Jira requirements into grounded business rules, test scenarios, ambiguities, and risks for QA Studio."
+description: "Extract traceable business rules, grounded scenarios, ambiguities, and risks from supplied requirements; use before manual case or Gherkin generation."
 ---
 
-# SpecForge
+# Extract business rules and grounded scenarios
 
-Preserve exact requirement values and source traceability. Hand the business-rule and scenario artifact to the requested downstream stage; leave manual case design and feature generation to their owning roles.
+## Establish the evidence set
 
-## Load the canonical instructions
+Inputs: exact current-flow requirement paths or inline content, BASE_NAME, and OUTPUT_PATH. Read the complete assigned documents; do not discover other runs under output/. Inventory business rules, explicitly stated limits, authentication scope, and documentation-only requirements before selecting scenarios.
 
-Read [SpecForge.agent.md](../../agents/SpecForge.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Derive rules and scenarios
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Assign stable BR and SCN identifiers with source requirement links. Record missing limits and contradictory statements as gaps rather than inventing values. A Boundary scenario needs the exact stated limit; malformed data or missing fields are Negative/Data Validation/Edge.
 
+Select at most three Automation scenarios: happy path, negative, then authentication when in scope; otherwise a stated boundary, additional error, or edge case. Mark OpenAPI/Swagger documentation scenarios Manual-Only and keep them outside that automation cap. Extract all business rules even when the scenario cap prevents complete testing.
+
+## Verify and hand off
+
+Write only output/specforge/{BASE_NAME}-BusinessRules.md using the business-rule and scenario tables in the output reference. Check unique IDs, source links, scenario tracks, cited boundaries, and explicit LOW/MEDIUM/HIGH/CRITICAL risks. Return the path and unresolved gaps; test-case design belongs to TestCraft.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-analysis-workflow](../../agent-reference/SpecForge/01-analysis-workflow.md)
 - [02-output-and-quality](../../agent-reference/SpecForge/02-output-and-quality.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

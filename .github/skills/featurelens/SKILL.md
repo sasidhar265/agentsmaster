@@ -1,24 +1,30 @@
 ---
 name: featurelens
-description: "Review Gherkin features for syntax, business alignment, scenario coverage, canonical step vocabulary, and readiness for QA Studio automation."
+description: "Validate supplied Gherkin against original requirements, BDD syntax, canonical vocabulary, and automation-readiness rules; use for a feature quality gate without editing the feature."
 ---
 
-# FeatureLens
+# Review feature readiness
 
-Keep the source feature unchanged. Return evidence-based readiness and actionable findings to GherkinGenie. Preserve the prescribed output folder spelling: output/featurelense/.
+## Read source and feature independently
 
-## Load the canonical instructions
+Inputs: feature path, original requirements and scenario analysis, BASE_NAME, and report path. Establish the required automation behaviors from source material before accepting the generated scenarios.
 
-Read [FeatureLens.agent.md](../../agents/FeatureLens.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Evaluate automation readiness
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Inspect Gherkin structure, business alignment, scenario mix, auth coverage, canonical step wording, concrete DataTables, and observable assertions. Reject tags, Scenario Outline/Examples, placeholders, duplicates, ungrounded limits, vague steps, redundant assertions, and prohibited documentation/performance scenarios under the review reference.
 
+Calculate readiness using the reference rubric and retain evidence for failed checks. PASS requires readiness ≥80% and every mandatory condition; do not approve syntax alone or replace missing behavior with a readiness score.
+
+## Preserve the reviewed artifact
+
+Write output/featurelense/{BASE_NAME}-Feature-ValidationReport.md, retaining that exact folder spelling and the prescribed report format. Return verdict, readiness, locations, and required GherkinGenie changes. Do not repair or copy the feature; BDDAutomator consumes only the validated source.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-review-workflow](../../agent-reference/FeatureLens/01-review-workflow.md)
 - [02-report-and-quality](../../agent-reference/FeatureLens/02-report-and-quality.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->

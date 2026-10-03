@@ -1,24 +1,30 @@
 ---
 name: qualitysentinel
-description: "Review manual test cases for requirement coverage, executable steps, measurable expected results, duplicates, and critical gaps; produce the QA Studio validation verdict."
+description: "Independently audit supplied manual cases against source requirements, calculate coverage, and issue an evidence-based gate verdict; use for validation, not case repair."
 ---
 
-# QualitySentinel
+# Audit manual case coverage and quality
 
-Review the supplied cases without rewriting them. Ground coverage metrics in mapped requirements; return exact rework findings to TestCraft and permit export only after the full gate passes.
+## Establish the denominator
 
-## Load the canonical instructions
+Inputs: exact case file, original requirements, current-flow scenario analysis, any supplied automation coverage evidence, BASE_NAME, and report path. Read requirements independently. Map each requirement to supported cases; do not use a generator's coverage claim as evidence.
 
-Read [QualitySentinel.agent.md](../../agents/QualitySentinel.agent.md) before performing this role. Its role boundaries, artifact contracts, and conditional references are authoritative. Runner frontmatter describes the agent profile; it does not grant tools or permissions to this skill.
+## Audit execution and coverage
 
-If the agent definition still contains `AGENT_MODULES_START` markers, read these required modules in this order:
+Calculate covered/total requirement coverage and expose uncovered requirements. Check traceability, reproducible preconditions, concrete data, clear steps, measurable expected results, and duplicate evidence. Reject invented boundaries, boundary labels on basic error handling, and performance cases. Check authentication coverage whenever source requirements mention it; count another track only with supplied evidence.
 
+PASS requires coverage ≥90%, every requirement mapped, and no critical or mandatory-rule failures. A percentage alone cannot override an uncovered requirement. If the three-case generation cap prevents the gate, report the conflict rather than weakening approval criteria.
+
+## Return a review, not repaired tests
+
+Leave the case artifact unchanged. Write output/qualitysentinel/{BASE_NAME}-ManualTestCases-ValidationReport.md in at most 50 lines using the report template. Include numerator/denominator, verdict, affected IDs, and actionable findings for TestCraft. Permit the SheetCraft handoff only after PASS.
+
+## Required standards and artifact contracts
+
+Read these references in order before executing this procedure. They own detailed constraints, rubrics, and formats; this skill owns the stage procedure. When this skill and these references are already inline in a compiled agent, use that text without reloading it. Missing required references are BLOCKED.
+
+<!-- AGENT_MODULES_START -->
 - [GENAI-QUALITY](../../agent-reference/GENAI-QUALITY.md)
 - [01-review-workflow](../../agent-reference/QualitySentinel/01-review-workflow.md)
 - [02-report-and-quality](../../agent-reference/QualitySentinel/02-report-and-quality.md)
-
-If QA Studio has already assembled those modules into the agent definition, use that assembled text; do not reload the same modules. A Markdown link alone does not load instructions. Report BLOCKED if required instructions cannot be read.
-
-## Perform the requested stage
-
-Use the supplied current-flow inputs and the loaded role workflow. Keep original inputs intact and write only the role’s prescribed artifacts. Use the tools actually available in the runtime; disclose unavailable capabilities and do not represent same-agent review as independent. Loading this skill does not start the entire pipeline or authorize external mutations. Return actual artifact paths, evidence, verdicts, and unresolved blockers to the caller.
+<!-- AGENT_MODULES_END -->
